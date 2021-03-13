@@ -19,26 +19,31 @@ namespace BugTriageModel.Services
         static readonly string connectionString = ConfigurationManager.ConnectionStrings["Connect"].ConnectionString;
         static readonly ServiceConfig config = new ServiceConfig(connectionString);
 
-  
-        
         public static async Task<List<Ticket>> GetTickets()
         {
             List<Ticket> tickets = new List<Ticket>();
             try
             {
                 /*Retrieve all tickets*/
-                string fetchTicketQuery = "<fetch distinct='false' mapping='logical' output-format='xml-platform' version='1.0'>" +
-                                             "<entity name='cr902_ticket'>" +
-                                             "<attribute name='cr902_ticketid'/>" +
-                                             "<attribute name='cr902_name'/>" +
-                                             "<attribute name='new_type'/>" +
-                                             "<attribute name='new_status'/>" +
-                                             "<attribute name='new_description'/>" +
-                                             //"<attribute name='new_assgintoid'/>" +
-                                             "<order descending='false' attribute='cr902_name'/>" +
-                                             "</entity>" +
-                                             "</fetch>";
-
+                string fetchTicketQuery = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>" + 
+                  "<entity name='cr902_ticket'>" +
+                    "<attribute name='cr902_ticketid' />" +
+                    "<attribute name='cr902_name' />" +
+                    "<attribute name='new_description' />" +
+                    "<attribute name = 'new_module' />" +
+                    "<attribute name='createdon' />" +
+                    "<attribute name='new_detectedbyid' />" +
+                    "<attribute name='new_status' />" +
+                    "<attribute name='new_type' />" +
+                    "<attribute name='new_assigntoid' />" +
+                    "<order attribute='cr902_name' descending='false' />" +
+                    "<link-entity name='new_users' from='new_usersid' to='new_assigntoid' link-type='inner' alias='ai'>" +
+                      "<filter type='and'>" +
+                        "<condition attribute='new_name' operator='not-null' />" +
+                      "</filter>" +
+                    "</link-entity>" +
+                  "</entity>" +
+                "</fetch>";
                 var formattedValueHeaders = new Dictionary<string, List<string>> {
                 { "Prefer", new List<string>
                     { "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"" }
@@ -55,11 +60,11 @@ namespace BugTriageModel.Services
                             Ticket newticket = new Ticket();
                             newticket.Title = ticket["cr902_name"]?.ToString();
                             newticket.Description = ticket["new_description"]?.ToString();
-                           // newticket.AssignedTo = ticket["new_assginto"].ToString();
-                            newticket.Status = ticket["new_status"]?.ToString();
-                            newticket.Type = ticket["new_type"]?.ToString();
+                            newticket.AssignedTo = ticket["_new_assigntoid_value@OData.Community.Display.V1.FormattedValue"]?.ToString();
+                            newticket.Status = ticket["new_status@OData.Community.Display.V1.FormattedValue"]?.ToString();
+                            newticket.Type = ticket["new_type@OData.Community.Display.V1.FormattedValue"]?.ToString();
                             tickets.Add(newticket);
-                            Console.WriteLine($"Name - {ticket["cr902_name"]}, Status - {ticket["new_status@OData.Community.Display.V1.FormattedValue"]}");
+                            Console.WriteLine($"Name - {ticket["new_assigntoid"]}, Status - {ticket["new_status@OData.Community.Display.V1.FormattedValue"]}");
                         }
                     }
                 }
@@ -78,8 +83,7 @@ namespace BugTriageModel.Services
             try
             {
                 try
-                { 
-                    
+                {                     
                     ConnectService app = new ConnectService();
                     app.Run();
                 }

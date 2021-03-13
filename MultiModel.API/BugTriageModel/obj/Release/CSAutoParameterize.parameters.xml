@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Connect-Web.config Connection String" description="Connect Connection String used in web.config by the application to access the database." defaultValue="Url=https://org7ecc135a.crm6.dynamics.com/;AuthType=OAuth;Authority=https://login.microsoftonline.com/739e4d8c-6905-49c0-a776-3189eb39b77b;AppId=1ab6644b-7aa6-43da-84a1-869bcb8d96c8;ClientId=1ab6644b-7aa6-43da-84a1-869bcb8d96c8;RedirectUrl=http://localhost;UserPrincipalName=multitriage@multitriage.onmicrosoft.com;Password=A@123456;CallerObjectId=null;Version=9.2;MaxRetries=3;TimeoutInSeconds=180;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\PhD\\My_Papers_and_Studies\\Conference\\Dialog\\Project\\MultiModel\\MultiTriage\\MultiModel\.API\\BugTriageModel\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Connect']/@connectionString" />
+  </parameter>
+</parameters>

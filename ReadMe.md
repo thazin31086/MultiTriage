@@ -32,6 +32,6 @@ Note: If you are using your own dataset, please use C# AST Extractor and Java# A
 ## Step 4: Train model
 ```
 run multirage.py to train multitriage model 
-run singleCNN to train Single CNN model 
-run singlRNN to train Single RNN model
+run singleCNN.py to train Single CNN model 
+run singlRNN.py to train Single RNN model
 ```
